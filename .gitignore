@@ -1,0 +1,7 @@
+__pycache__
+.idea
+.venv
+db.sqlite3
+AppleStore.csv
+media/
+notebook/
