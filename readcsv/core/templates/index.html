@@ -8,48 +8,154 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
-    <div class="container">
-        <hr>
-        <div class="row">
-            <div class="col">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="csv_file">Arquivo CSV</label>
-                        <input type="file" class="form-control-file" id="csv_file" name="file_csv" accept=".csv">
-                        <br/>
-                        <button type="submit" name="btnSubmitFile">Enviar e processar</button>
-                    </div>
-                </form>
-                {% if uploaded_file_url %}
-                    <p>Arquivo enviado e processamento iniciado. {{ uploaded_file_url }}</p>
-                    <p>Verifique o arquivo readcsvlog.log para saber do fim do processamento.</p>
-                {% endif %}
-            </div>
+<div class="container">
+    <hr>
+    <div class="row">
+        <div class="col">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="csv_file">Arquivo CSV</label>
+                    <input type="file" class="form-control-file" id="csv_file" name="file_csv" accept=".csv">
+                    <br/>
+                    <button type="submit" name="btnSubmitFile">Enviar e processar</button>
+                </div>
+            </form>
+            {% if uploaded_file_url %}
+            <p>Arquivo enviado e processamento iniciado. {{ uploaded_file_url }}</p>
+            <p>Dependendo do número de registros do arquivo, o processamento pode demorar um poubo.</p>
+            <p>Verifique o arquivo readcsvlog.log para saber do fim do processamento.</p>
+            {% endif %}
         </div>
-        <hr>
-
-        <div class="row">
-            <div class="col">
-                <p>Categoria News - App com a maior avaliação - <a href="">Listar</a> </p>
-            </div>
-        </div>
-        <hr>
-
-        <div class="row">
-            <div class="col">
-                <p>Music e Book - 10 Apps mais avaliadas - <a href="">Listar</a> </p>
-            </div>
-        </div>
-        <hr>
-
-        <div class="row">
-            <div class="col">
-                <p>Music e Book - 10 apps mais citadas - <a href="">Listar</a> </p>
-            </div>
-        </div>
-        <hr>
     </div>
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <p>Categoria News - App com a maior avaliação - <a id="link_listar_1" href="#">Listar</a></p>
+            <table class="table table-responsive table-bordered table-sm" id="table_1">
+                <thead>
+                <tr>
+                    <th scope="col">ID_CSV</th>
+                    <th scope="col">Track_name</th>
+                    <th scope="col">n_citacoes</th>
+                    <th scope="col">size_bytes</th>
+                    <th scope="col">price</th>
+                    <th scope="col">prime_genre</th>
+                    <th scope="col">rating_count_tot</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="table_1_json">Json</label>
+                <textarea class="form-control" id="table_1_json" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="table_1_csv">CSV</label>
+                <textarea class="form-control" id="table_1_csv" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <p>Music e Book - 10 Apps mais avaliadas - <a id="link_listar_2" href="#">Listar</a></p>
+            <table class="table table-responsive table-bordered table-sm" id="table_2">
+                <thead>
+                <tr>
+                    <th scope="col">ID_CSV</th>
+                    <th scope="col">Track_name</th>
+                    <th scope="col">n_citacoes</th>
+                    <th scope="col">size_bytes</th>
+                    <th scope="col">price</th>
+                    <th scope="col">prime_genre</th>
+                    <th scope="col">rating_count_tot</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="table_2_json">Json</label>
+                <textarea class="form-control" id="table_2_json" rows="3"></textarea>
+            </div>    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="table_2_json">Json</label>
+                <textarea class="form-control" id="table_2_json" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="table_2_csv">CSV</label>
+                <textarea class="form-control" id="table_2_csv" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="table_2_csv">CSV</label>
+                <textarea class="form-control" id="table_2_csv" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <p>Music e Book - 10 apps mais citadas - <a href="">Listar</a></p>
+            <table class="table table-responsive table-bordered table-sm" id="table_3">
+                <thead>
+                <tr>
+                    <th scope="col">ID_CSV</th>
+                    <th scope="col">Track_name</th>
+                    <th scope="col">n_citacoes</th>
+                    <th scope="col">size_bytes</th>
+                    <th scope="col">price</th>
+                    <th scope="col">prime_genre</th>
+                    <th scope="col">rating_count_tot</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="table_2_json">Json</label>
+                <textarea class="form-control" id="table_3_json" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="table_2_csv">CSV</label>
+                <textarea class="form-control" id="table_3_csv" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>
 <body>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -61,5 +167,50 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+<script type="text/javascript">
+    function arrayToCSV(objArray) {
+        let csv = '';
+        let header = Object.keys(objArray[0]).join(';');
+        let values = objArray.map(o => Object.values(o).join(';')).join('\n');
+        csv += header + '\n' + values;
+        return csv;
+
+        }
+
+
+</script>
+
+<script type=text/javascript>
+    $("#link_listar_1").click(function () {
+        $.ajax({
+           url: '{% url 'news' %}',
+           type: 'get',
+           dataType: 'json',
+           success: function (result) {
+                $('#table_1 tbody').html('');
+                var thHTML = '<tbody>';
+                thHTML += '<tr>';
+                thHTML += '<td>'+result.id_csv+'</td>';
+                thHTML += '<td>'+result.track_name+'</td>';
+                thHTML += '<td>'+result.n_citacoes+'</td>';
+                thHTML += '<td>'+result.size_bytes+'</td>';
+                thHTML += '<td>'+result.price+'</td>';
+                thHTML += '<td>'+result.prime_genre+'</td>';
+                thHTML += '<td>'+result.rating_count_tot+'</td>';
+                thHTML += '</tr></tbody>';
+                $('#table_1').append(thHTML);
+
+                var result_json = JSON.stringify(result,null,4);
+
+                $('#table_1_json').val(result_json);
+                $('#table_1_csv').val(arrayToCSV([result]));
+        }
+      });
+    });
+
+</script>
+
 </body>
 </html>

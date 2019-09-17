@@ -1,4 +1,3 @@
-import json
 import csv
 import logging
 import os
@@ -6,6 +5,9 @@ from threading import Thread
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Q
+from django.http import JsonResponse, Http404
 from django.shortcuts import render
 
 from readcsv.core.models import AppleStore
@@ -26,9 +28,32 @@ def home(request):
 
 
 def news_app(request):
-    pass
-    #if not request.is_ajax():
-    #    raise Http404
+    if not request.is_ajax():
+        raise Http404
+
+    result = \
+        AppleStore.objects.filter(prime_genre='News').order_by('-rating_count_tot').values('id_csv', 'track_name',
+                                                                                           'n_citacoes', 'size_bytes',
+                                                                                           'price', 'prime_genre',
+                                                                                           'rating_count_tot')[0]
+
+    return JsonResponse(result, encoder=DjangoJSONEncoder)
+
+
+def music_book_app(request):
+    if not request.is_ajax():
+        raise Http404
+    result = \
+        AppleStore.objects.filter(Q(prime_genre='Music') | Q(prime_genre='Book')).order_by('-rating_count_tot').values(
+            'id_csv',
+            'track_name',
+            'n_citacoes',
+            'size_bytes',
+            'price',
+            'prime_genre',
+            'rating_count_tot')[:10]
+
+    return JsonResponse(result, encoder=DjangoJSONEncoder)
 
 
 class ImportFile(Thread):
