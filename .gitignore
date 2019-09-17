@@ -5,3 +5,5 @@ db.sqlite3
 AppleStore.csv
 media/
 notebook/
+*.log
+*.env

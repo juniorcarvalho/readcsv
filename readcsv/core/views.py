@@ -1,15 +1,20 @@
+import json
 import csv
+import logging
 import os
 from threading import Thread
+
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
 
 from readcsv.core.models import AppleStore
 
+log = logging.getLogger(settings.LOGGING_APPNAME)
+
 
 def home(request):
-    if request.method == 'POST' and request.FILES['file_csv']:
+    if request.method == 'POST' and 'btnSubmitFile' in request.POST and request.FILES['file_csv']:
         file_csv = request.FILES['file_csv']
         fs = FileSystemStorage()
         filename = fs.save(file_csv.name, file_csv)
@@ -20,11 +25,17 @@ def home(request):
     return render(request, 'index.html')
 
 
-class ImportFile(Thread):
+def news_app(request):
+    pass
+    #if not request.is_ajax():
+    #    raise Http404
 
+
+class ImportFile(Thread):
     def __init__(self, file_name):
         Thread.__init__(self)
         self.file_name = file_name
+        log.debug('Inicio: ImportFile {0}'.format(self.file_name))
 
     def run(self):
         AppleStore.objects.all().delete()
@@ -42,3 +53,5 @@ class ImportFile(Thread):
                 apple_store.prime_genre = row[12]
                 apple_store.rating_count_tot = row[6]
                 apple_store.save()
+        os.remove(self.file_name)
+        log.debug('Fim: ImportFile')

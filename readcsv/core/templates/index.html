@@ -18,12 +18,34 @@
                         <label for="csv_file">Arquivo CSV</label>
                         <input type="file" class="form-control-file" id="csv_file" name="file_csv" accept=".csv">
                         <br/>
-                        <button type="submit">Enviar e processar</button>
+                        <button type="submit" name="btnSubmitFile">Enviar e processar</button>
                     </div>
                 </form>
                 {% if uploaded_file_url %}
-                    <p>File uploaded at: {{ uploaded_file_url }}</p>
+                    <p>Arquivo enviado e processamento iniciado. {{ uploaded_file_url }}</p>
+                    <p>Verifique o arquivo readcsvlog.log para saber do fim do processamento.</p>
                 {% endif %}
+            </div>
+        </div>
+        <hr>
+
+        <div class="row">
+            <div class="col">
+                <p>Categoria News - App com a maior avaliação - <a href="">Listar</a> </p>
+            </div>
+        </div>
+        <hr>
+
+        <div class="row">
+            <div class="col">
+                <p>Music e Book - 10 Apps mais avaliadas - <a href="">Listar</a> </p>
+            </div>
+        </div>
+        <hr>
+
+        <div class="row">
+            <div class="col">
+                <p>Music e Book - 10 apps mais citadas - <a href="">Listar</a> </p>
             </div>
         </div>
         <hr>
