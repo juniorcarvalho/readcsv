@@ -21,5 +21,6 @@ import readcsv.core.views
 urlpatterns = [
     path('', readcsv.core.views.home),
     path('news/', readcsv.core.views.news_app, name='news'),
+    path('music_book/', readcsv.core.views.music_book_app, name='music_book'),
     path('admin/', admin.site.urls),
 ]

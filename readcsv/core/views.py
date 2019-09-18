@@ -53,7 +53,7 @@ def music_book_app(request):
             'prime_genre',
             'rating_count_tot')[:10]
 
-    return JsonResponse(result, encoder=DjangoJSONEncoder)
+    return JsonResponse([r for r in result], encoder=DjangoJSONEncoder, safe=False)
 
 
 class ImportFile(Thread):

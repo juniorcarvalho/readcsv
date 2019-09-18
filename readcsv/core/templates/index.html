@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Coegnitivo.io - readcsv</title>
+    <title>Cognitivo.io - readcsv</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
@@ -28,11 +28,12 @@
             {% endif %}
         </div>
     </div>
+
     <hr>
 
     <div class="row">
         <div class="col">
-            <p>Categoria News - App com a maior avaliação - <a id="link_listar_1" href="#">Listar</a></p>
+            <p>Categoria News - App com a maior avaliação -<button type="button" class="btn btn-link" id="link_listar_1">Listar</button></p>
             <table class="table table-responsive table-bordered table-sm" id="table_1">
                 <thead>
                 <tr>
@@ -69,7 +70,7 @@
 
     <div class="row">
         <div class="col">
-            <p>Music e Book - 10 Apps mais avaliadas - <a id="link_listar_2" href="#">Listar</a></p>
+            <p>Music e Book - 10 Apps mais avaliadas -<button type="button" class="btn btn-link" id="link_listar_2">Listar</button></p>
             <table class="table table-responsive table-bordered table-sm" id="table_2">
                 <thead>
                 <tr>
@@ -90,23 +91,7 @@
             <div class="form-group">
                 <label for="table_2_json">Json</label>
                 <textarea class="form-control" id="table_2_json" rows="3"></textarea>
-            </div>    <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <label for="table_2_json">Json</label>
-                <textarea class="form-control" id="table_2_json" rows="3"></textarea>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <label for="table_2_csv">CSV</label>
-                <textarea class="form-control" id="table_2_csv" rows="3"></textarea>
-            </div>
-        </div>
-    </div>
-
         </div>
     </div>
     <div class="row">
@@ -122,7 +107,7 @@
 
     <div class="row">
         <div class="col">
-            <p>Music e Book - 10 apps mais citadas - <a href="">Listar</a></p>
+            <p>Music e Book - 10 apps mais citadas -<button type="button" class="btn btn-link" id="link_listar_3">Listar</button></p>
             <table class="table table-responsive table-bordered table-sm" id="table_3">
                 <thead>
                 <tr>
@@ -170,16 +155,16 @@
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
 <script type="text/javascript">
-    function arrayToCSV(objArray) {
+    function arrayToCSV(objArray, header_ = false) {
         let csv = '';
-        let header = Object.keys(objArray[0]).join(';');
-        let values = objArray.map(o => Object.values(o).join(';')).join('\n');
-        csv += header + '\n' + values;
-        return csv;
-
+        let header = '';
+        if (header_ == true) {
+            header += Object.keys(objArray[0]).join(';') + '\n';
         }
-
-
+        let values = objArray.map(o => Object.values(o).join(';')).join('\n');
+        csv += header + values;
+        return csv;
+    }
 </script>
 
 <script type=text/javascript>
@@ -190,7 +175,7 @@
            dataType: 'json',
            success: function (result) {
                 $('#table_1 tbody').html('');
-                var thHTML = '<tbody>';
+                let thHTML = '<tbody>';
                 thHTML += '<tr>';
                 thHTML += '<td>'+result.id_csv+'</td>';
                 thHTML += '<td>'+result.track_name+'</td>';
@@ -205,11 +190,46 @@
                 var result_json = JSON.stringify(result,null,4);
 
                 $('#table_1_json').val(result_json);
-                $('#table_1_csv').val(arrayToCSV([result]));
+                $('#table_1_csv').val(arrayToCSV([result], true));
         }
       });
     });
 
+    $("#link_listar_2").click(function(){
+        $.ajax({
+            url: '{% url 'music_book' %}',
+            type: 'get',
+            dataType: 'json',
+            success: function (result){
+                $('#table_2 tbody').html('');
+                let thHTML = '<tbody>';
+                let csv = '';
+                $.each(result, function(i, r){
+                    thHTML += '<tr>';
+                    thHTML += '<td>'+r.id_csv+'</td>';
+                    thHTML += '<td>'+r.track_name+'</td>';
+                    thHTML += '<td>'+r.n_citacoes+'</td>';
+                    thHTML += '<td>'+r.size_bytes+'</td>';
+                    thHTML += '<td>'+r.price+'</td>';
+                    thHTML += '<td>'+r.prime_genre+'</td>';
+                    thHTML += '<td>'+r.rating_count_tot+'</td>';
+                    thHTML += '</tr>';
+                    if (i == 0){
+                        csv += arrayToCSV([r],true)+'\n';
+                    }
+                    else{
+                        csv += arrayToCSV([r]) +'\n';
+                    }
+                });
+                thHTML += '</tbody>';
+                $('#table_2').append(thHTML);
+
+                var result_json = JSON.stringify(result,null,4);
+                $('#table_2_json').val(result_json);
+                $('#table_2_csv').val(csv);
+            }
+        });
+    });
 </script>
 
 </body>
