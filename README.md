@@ -23,3 +23,14 @@ https://drive.google.com/file/d/1pO5RECTeubZnkSZ6t1ht6wu84231Xv-A/view
 
 1. Ative o virtualenv: `source .venv/bin/activate`
 2. Execute: `pytest -s -vvv`
+
+
+### twitter api
+Configure as seguintes variáves no .env
+TWITTER_API_KEY=
+
+TWITTER_SECRET_KEY=
+
+TWITTER_ACCESS_TOKEN=
+
+TWITTER_ACCESS_TOKEN_SECRET=
