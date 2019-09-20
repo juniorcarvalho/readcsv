@@ -11,21 +11,23 @@
 <div class="container">
     <hr>
     <div class="row">
-        <div class="col">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="csv_file">Arquivo CSV</label>
-                    <input type="file" class="form-control-file" id="csv_file" name="file_csv" accept=".csv">
-                    <br/>
-                    <button type="submit" name="btnSubmitFile">Enviar e processar</button>
-                </div>
-            </form>
-            {% if uploaded_file_url %}
-            <p>Arquivo enviado e processamento iniciado. {{ uploaded_file_url }}</p>
-            <p>Dependendo do número de registros do arquivo, o processamento pode demorar um pouco.</p>
-            <p>Verifique o arquivo readcsvlog.log para saber do fim do processamento.</p>
-            {% endif %}
+        <div class="col-md-12">
+            <div class="form-group">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="csv_file">Arquivo CSV</label>
+                        <input type="file" class="form-control-file" id="csv_file" name="file_csv" accept=".csv">
+                        <br/>
+                        <button type="submit" name="btnSubmitFile">Enviar e processar</button>
+                    </div>
+                </form>
+                {% if uploaded_file_url %}
+                <p>Arquivo enviado e processamento iniciado. {{ uploaded_file_url }}</p>
+                <p>Dependendo do número de registros do arquivo, o processamento pode demorar um pouco.</p>
+                <p>Verifique o arquivo readcsvlog.log para saber do fim do processamento.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 
@@ -111,7 +113,7 @@
 
     <div class="row">
         <div class="col">
-            <p>Music e Book - 10 apps mais citadas -
+            <p>Music e Book - 10 apps mais citadas no twitter -
                 <button type="button" class="btn btn-link" id="link_listar_3">Listar</button>
             </p>
             <table class="table table-responsive table-bordered table-sm" id="table_3">
@@ -239,6 +241,45 @@
                 } else {
                     $('#table_2_json').val('Nenhum registro encontrado.');
                     $('#table_2_csv').val('Nenhum registro encontrado.');
+                }
+            }
+        });
+    });
+
+    $("#link_listar_3").click(function () {
+        $.ajax({
+            url: "{% url 'music_book_twitter' %}",
+            type: 'get',
+            dataType: 'json',
+            success: function (result) {
+                $('#table_3 tbody').html('');
+                if (result.length > 0) {
+                    let thHTML = '<tbody>';
+                    let csv = '';
+                    $.each(result, function (i, r) {
+                        thHTML += '<tr>';
+                        thHTML += '<td>' + r.id_csv + '</td>';
+                        thHTML += '<td>' + r.track_name + '</td>';
+                        thHTML += '<td>' + r.n_citacoes + '</td>';
+                        thHTML += '<td>' + r.size_bytes + '</td>';
+                        thHTML += '<td>' + r.price + '</td>';
+                        thHTML += '<td>' + r.prime_genre + '</td>';
+                        thHTML += '<td>' + r.rating_count_tot + '</td>';
+                        thHTML += '</tr>';
+                        if (i === 0) {
+                            csv += arrayToCSV([r], true) + '\n';
+                        } else {
+                            csv += arrayToCSV([r]) + '\n';
+                        }
+                    });
+                    thHTML += '</tbody>';
+                    $('#table_3').append(thHTML);
+                    let result_json = JSON.stringify(result, null, 4);
+                    $('#table_3_json').val(result_json);
+                    $('#table_3_csv').val(csv);
+                } else {
+                    $('#table_3_json').val('Nenhum registro encontrado.');
+                    $('#table_3_csv').val('Nenhum registro encontrado.');
                 }
             }
         });

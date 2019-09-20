@@ -22,5 +22,6 @@ urlpatterns = [
     path('', readcsv.core.views.home),
     path('news/', readcsv.core.views.news_app, name='news'),
     path('music_book/', readcsv.core.views.music_book_app, name='music_book'),
+    path('music_book_twitter/', readcsv.core.views.music_book_twitter_app, name='music_book_twitter'),
     path('admin/', admin.site.urls),
 ]
