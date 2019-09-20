@@ -23,7 +23,7 @@
             </form>
             {% if uploaded_file_url %}
             <p>Arquivo enviado e processamento iniciado. {{ uploaded_file_url }}</p>
-            <p>Dependendo do número de registros do arquivo, o processamento pode demorar um poubo.</p>
+            <p>Dependendo do número de registros do arquivo, o processamento pode demorar um pouco.</p>
             <p>Verifique o arquivo readcsvlog.log para saber do fim do processamento.</p>
             {% endif %}
         </div>
@@ -164,12 +164,10 @@
     function arrayToCSV(objArray, header_ = false) {
         let csv = '';
         let header = '';
-        if (header_ == true) {
+        if (header_ === true) {
             header += Object.keys(objArray[0]).join(';') + '\n';
         }
-        let values = objArray.map(o = > Object.values(o).join(';')
-    ).
-        join('\n');
+        let values = objArray.map(o => Object.values(o).join(';')).join('\n');
         csv += header + values;
         return csv;
     }
@@ -178,62 +176,70 @@
 <script type=text/javascript>
     $("#link_listar_1").click(function () {
         $.ajax({
-            url: '{% url 'news' %}',
+            url: "{% url 'news' %}",
             type: 'get',
             dataType: 'json',
             success: function (result) {
                 $('#table_1 tbody').html('');
-                let thHTML = '<tbody>';
-                thHTML += '<tr>';
-                thHTML += '<td>' + result.id_csv + '</td>';
-                thHTML += '<td>' + result.track_name + '</td>';
-                thHTML += '<td>' + result.n_citacoes + '</td>';
-                thHTML += '<td>' + result.size_bytes + '</td>';
-                thHTML += '<td>' + result.price + '</td>';
-                thHTML += '<td>' + result.prime_genre + '</td>';
-                thHTML += '<td>' + result.rating_count_tot + '</td>';
-                thHTML += '</tr></tbody>';
-                $('#table_1').append(thHTML);
+                if (result.id_csv !== undefined) {
+                    let thHTML = '<tbody>';
+                    thHTML += '<tr>';
+                    thHTML += '<td>' + result.id_csv + '</td>';
+                    thHTML += '<td>' + result.track_name + '</td>';
+                    thHTML += '<td>' + result.n_citacoes + '</td>';
+                    thHTML += '<td>' + result.size_bytes + '</td>';
+                    thHTML += '<td>' + result.price + '</td>';
+                    thHTML += '<td>' + result.prime_genre + '</td>';
+                    thHTML += '<td>' + result.rating_count_tot + '</td>';
+                    thHTML += '</tr></tbody>';
+                    $('#table_1').append(thHTML);
+                    let result_json = JSON.stringify(result, null, 4);
 
-                var result_json = JSON.stringify(result, null, 4);
-
-                $('#table_1_json').val(result_json);
-                $('#table_1_csv').val(arrayToCSV([result], true));
+                    $('#table_1_json').val(result_json);
+                    $('#table_1_csv').val(arrayToCSV([result], true));
+                } else {
+                    $('#table_1_json').val('Nenhum registro encontrado.');
+                    $('#table_1_csv').val('Nenhum registro encontrado.');
+                }
             }
         });
     });
 
     $("#link_listar_2").click(function () {
         $.ajax({
-            url: '{% url 'music_book' %}',
+            url: "{% url 'music_book' %}",
             type: 'get',
             dataType: 'json',
             success: function (result) {
                 $('#table_2 tbody').html('');
-                let thHTML = '<tbody>';
-                let csv = '';
-                $.each(result, function (i, r) {
-                    thHTML += '<tr>';
-                    thHTML += '<td>' + r.id_csv + '</td>';
-                    thHTML += '<td>' + r.track_name + '</td>';
-                    thHTML += '<td>' + r.n_citacoes + '</td>';
-                    thHTML += '<td>' + r.size_bytes + '</td>';
-                    thHTML += '<td>' + r.price + '</td>';
-                    thHTML += '<td>' + r.prime_genre + '</td>';
-                    thHTML += '<td>' + r.rating_count_tot + '</td>';
-                    thHTML += '</tr>';
-                    if (i == 0) {
-                        csv += arrayToCSV([r], true) + '\n';
-                    } else {
-                        csv += arrayToCSV([r]) + '\n';
-                    }
-                });
-                thHTML += '</tbody>';
-                $('#table_2').append(thHTML);
-
-                var result_json = JSON.stringify(result, null, 4);
-                $('#table_2_json').val(result_json);
-                $('#table_2_csv').val(csv);
+                if (result.length > 0) {
+                    let thHTML = '<tbody>';
+                    let csv = '';
+                    $.each(result, function (i, r) {
+                        thHTML += '<tr>';
+                        thHTML += '<td>' + r.id_csv + '</td>';
+                        thHTML += '<td>' + r.track_name + '</td>';
+                        thHTML += '<td>' + r.n_citacoes + '</td>';
+                        thHTML += '<td>' + r.size_bytes + '</td>';
+                        thHTML += '<td>' + r.price + '</td>';
+                        thHTML += '<td>' + r.prime_genre + '</td>';
+                        thHTML += '<td>' + r.rating_count_tot + '</td>';
+                        thHTML += '</tr>';
+                        if (i === 0) {
+                            csv += arrayToCSV([r], true) + '\n';
+                        } else {
+                            csv += arrayToCSV([r]) + '\n';
+                        }
+                    });
+                    thHTML += '</tbody>';
+                    $('#table_2').append(thHTML);
+                    let result_json = JSON.stringify(result, null, 4);
+                    $('#table_2_json').val(result_json);
+                    $('#table_2_csv').val(csv);
+                } else {
+                    $('#table_2_json').val('Nenhum registro encontrado.');
+                    $('#table_2_csv').val('Nenhum registro encontrado.');
+                }
             }
         });
     });

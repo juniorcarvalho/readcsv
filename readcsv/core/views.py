@@ -16,7 +16,7 @@ log = logging.getLogger(settings.LOGGING_APPNAME)
 
 
 def home(request):
-    if request.method == 'POST' and 'btnSubmitFile' in request.POST and request.FILES['file_csv']:
+    if request.method == 'POST' and request.FILES['file_csv']:
         file_csv = request.FILES['file_csv']
         fs = FileSystemStorage()
         filename = fs.save(file_csv.name, file_csv)
@@ -35,7 +35,11 @@ def news_app(request):
         AppleStore.objects.filter(prime_genre='News').order_by('-rating_count_tot').values('id_csv', 'track_name',
                                                                                            'n_citacoes', 'size_bytes',
                                                                                            'price', 'prime_genre',
-                                                                                           'rating_count_tot')[0]
+                                                                                           'rating_count_tot')
+    if len(result) > 0:
+        result = result[0]
+    else:
+        result = {}
 
     return JsonResponse(result, encoder=DjangoJSONEncoder)
 
@@ -51,7 +55,11 @@ def music_book_app(request):
             'size_bytes',
             'price',
             'prime_genre',
-            'rating_count_tot')[:10]
+            'rating_count_tot')
+    if len(result) > 0:
+        result = result[:10]
+    else:
+        result = []
 
     return JsonResponse([r for r in result], encoder=DjangoJSONEncoder, safe=False)
 

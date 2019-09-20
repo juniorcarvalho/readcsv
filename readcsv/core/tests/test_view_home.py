@@ -1,4 +1,8 @@
 import pytest
+from django.conf import settings
+import os
+from readcsv.core.models import AppleStore
+import time
 
 
 def test_view_get(client):
@@ -30,5 +34,16 @@ def test_view_template(client, applestore):
     assert 'id="table_3_csv"' in response_content
 
 
+@pytest.mark.django_db
+def test_view_home_upload_file(client):
+    file_name = os.path.join(settings.BASE_DIR, 'readcsv/core/tests/assets/AppleStoreTest.csv')
+    f = open(file_name, mode='r')
+    post_data = {'file_csv': f}
+    response = client.post('/', data=post_data)
+    time.sleep(10)
 
+    assert response.status_code == 200
+
+    registers = AppleStore.objects.all()
+    assert len(registers) == 1
 

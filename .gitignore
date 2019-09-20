@@ -146,11 +146,7 @@ dmypy.json
 .pyre/
 
 ### CVS template
-/CVS/*
-**/CVS/*
-.cvsignore
-*/.cvsignore
-.csv
+AppleStore.csv
 
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
@@ -236,3 +232,4 @@ readcsv/__pycache__/
 readcsv/core/__pycache__/
 readcsv/core/migrations/__pycache__/
 readcsvlog.log
+
