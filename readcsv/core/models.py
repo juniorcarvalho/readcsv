@@ -1,6 +1,13 @@
+'''
+models.py
+'''
 from django.db import models
 
+
 class AppleStore(models.Model):
+    '''
+    class model AppleStore
+    '''
     id_csv = models.IntegerField('ID')
     track_name = models.CharField('Track Name', max_length=255)
     n_citacoes = models.IntegerField('Nro. Citações', blank=True, null=True)
@@ -11,5 +18,3 @@ class AppleStore(models.Model):
 
     def __str__(self):
         return '{0} - {1}'.format(self.id_csv, self.track_name)
-
-

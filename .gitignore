@@ -233,3 +233,4 @@ readcsv/core/__pycache__/
 readcsv/core/migrations/__pycache__/
 readcsvlog.log
 
+.idea/

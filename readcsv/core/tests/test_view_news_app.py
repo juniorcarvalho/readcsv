@@ -1,3 +1,6 @@
+'''
+test module
+'''
 import json
 
 import pytest
@@ -6,6 +9,12 @@ from django.urls import reverse
 
 @pytest.mark.django_db
 def test_view_get(client, applestore):
+    '''
+    test get in view news
+    :param client:
+    :param applestore:
+    :return:
+    '''
     response = client.get(reverse('news'), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
     response_json = json.loads(response.content)
     assert response.status_code == 200
@@ -21,6 +30,11 @@ def test_view_get(client, applestore):
 
 @pytest.mark.django_db
 def test_view_get_return_empty(client):
+    '''
+    test empty return in get view news
+    :param client:
+    :return:
+    '''
     response = client.get(reverse('news'), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
     response_json = json.loads(response.content)
     assert response.status_code == 200
@@ -28,5 +42,10 @@ def test_view_get_return_empty(client):
 
 
 def test_view_get_return_404(client):
+    '''
+    test 404 return in get view news
+    :param client:
+    :return:
+    '''
     response = client.get(reverse('music_book'))
     assert response.status_code == 404
